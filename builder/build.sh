@@ -70,12 +70,12 @@ uboot_position=63
 tzsw_position=1503
 env_position=2015
 
-dd conv=notrunc if="${BUILD_RESULT_PATH}/bl1.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$signed_bl1_position
-dd conv=notrunc if="${BUILD_RESULT_PATH}/bl2.bin.hardkernel.720k_uboot" of="/${HYPRIOT_IMAGE_NAME}" seek=$bl2_position
-dd conv=notrunc if="${BUILD_RESULT_PATH}/u-boot.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$uboot_position
-dd conv=notrunc if="${BUILD_RESULT_PATH}/tzsw.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$tzsw_position
+dd conv=notrunc iflag=dsync oflag=dsync if="${BUILD_RESULT_PATH}/bl1.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$signed_bl1_position
+dd conv=notrunc iflag=dsync oflag=dsync if="${BUILD_RESULT_PATH}/bl2.bin.hardkernel.720k_uboot" of="/${HYPRIOT_IMAGE_NAME}" seek=$bl2_position
+dd conv=notrunc iflag=dsync oflag=dsync if="${BUILD_RESULT_PATH}/u-boot.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$uboot_position
+dd conv=notrunc iflag=dsync oflag=dsync if="${BUILD_RESULT_PATH}/tzsw.bin.hardkernel" of="/${HYPRIOT_IMAGE_NAME}" seek=$tzsw_position
 #<u-boot env erase>
-dd conv=notrunc if=/dev/zero of="/${HYPRIOT_IMAGE_NAME}" seek=$env_position bs=512 count=32
+dd conv=notrunc iflag=dsync oflag=dsync if=/dev/zero of="/${HYPRIOT_IMAGE_NAME}" seek=$env_position bs=512 count=32
 
 
 echo -e "o\nn\np\n1\n$BOOT_PARTITION_START\n$((ROOT_PARTITION_START-1))\nn\np\n2\n$ROOT_PARTITION_START\n\nt\n1\nc\nw\n" | fdisk "/${HYPRIOT_IMAGE_NAME}"

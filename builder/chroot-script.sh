@@ -112,12 +112,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 
 # set up Docker CE repository
-DOCKERREPO_FPR=9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-DOCKERREPO_KEY_URL=https://download.docker.com/linux/debian/gpg
-get_gpg "${DOCKERREPO_FPR}" "${DOCKERREPO_KEY_URL}"
+# # DOCKERREPO_FPR=9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+# # DOCKERREPO_KEY_URL=https://download.docker.com/linux/debian/gpg
+# # get_gpg "${DOCKERREPO_FPR}" "${DOCKERREPO_KEY_URL}"
 
-CHANNEL=edge # stable, test or edge
-echo "deb [arch=armhf] https://download.docker.com/linux/debian jessie $CHANNEL" > /etc/apt/sources.list.d/docker.list
+# # CHANNEL=edge # stable, test or edge
+# # echo "deb [arch=armhf] https://download.docker.com/linux/debian jessie $CHANNEL" > /etc/apt/sources.list.d/docker.list
 
 # reload package sources
 apt-get update
@@ -145,14 +145,11 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2DD567ECD986B59D
 echo "deb [arch=armhf] http://deb.odroid.in/5422-s/ xenial main" > /etc/apt/sources.list.d/odroid.list
 
 
-apt update 
-apt upgrade
-apt dist-upgrade
-
-apt-get download linux-image-4.14.24-113
-dpkg -i --force-all linux-image-4.14.24-113_20180305_armhf.deb
+apt-get update 
+apt-get upgrade -y
 apt-get dist-upgrade
-apt install linux-image-xu3=113-1
+
+apt install linux-image-xu3 -y #=120-1
 
 
 # # install cloud-init
@@ -192,8 +189,12 @@ apt install linux-image-xu3=113-1
 # apt-get install -y --force-yes \
 #   "docker-ce=${DOCKER_CE_VERSION}"
 
-useradd -m test -p P@ssw0rd
-usermod -a -G sudo test
+#mkdir /home/pirate
+#useradd pirate -m -d /home/pirate
+PASS=hypriot
+useradd -p $(openssl passwd -1 $PASS) pirate -m
+chown -R pirate:pirate /home/pirate
+usermod -aG sudo pirate
 
 # cleanup APT cache and lists
 apt-get clean
