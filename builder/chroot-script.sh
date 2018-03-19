@@ -149,12 +149,13 @@ apt-get update
 apt-get upgrade -y
 apt-get dist-upgrade
 
-apt install linux-image-xu3 -y #=120-1
+apt-get install linux-image-xu3 -y #=120-1
 
 
-# # install cloud-init
-# apt-get install -y \
-#   cloud-init
+# install cloud-init
+apt-get install -y \
+  parted \
+  cloud-init
 
 
 # ensure compatibility with Docker install.sh, so `raspbian` will be detected correctly
@@ -163,9 +164,9 @@ apt install linux-image-xu3 -y #=120-1
 #   lsb-release
 
 
-# mkdir -p /var/lib/cloud/seed/nocloud
-# ln -s /boot/user-data /var/lib/cloud/seed/nocloud/user-data
-# ln -s /boot/meta-data /var/lib/cloud/seed/nocloud/meta-data
+mkdir -p /var/lib/cloud/seed/nocloud
+ln -s /boot/user-data /var/lib/cloud/seed/nocloud/user-data
+ln -s /boot/meta-data /var/lib/cloud/seed/nocloud/meta-data
 
 # # install docker-machine
 # curl -sSL -o /usr/local/bin/docker-machine "https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine-Linux-armhf"
@@ -192,7 +193,7 @@ apt install linux-image-xu3 -y #=120-1
 #mkdir /home/pirate
 #useradd pirate -m -d /home/pirate
 PASS=hypriot
-useradd -p $(openssl passwd -1 $PASS) pirate -m
+useradd -p $(openssl passwd -1 $PASS) pirate -m -s /bin/bash
 chown -R pirate:pirate /home/pirate
 usermod -aG sudo pirate
 

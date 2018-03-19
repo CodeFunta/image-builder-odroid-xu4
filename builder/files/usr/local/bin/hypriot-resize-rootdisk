@@ -2,7 +2,7 @@
 set -x
 
 # sd card device name for ODROID XU4
-SDCARD_DEVICE="/dev/mmcblk0"
+SDCARD_DEVICE="/dev/mmcblk1"
 
 # install parted, if its not there
 if [ -z $(which parted) ]; then
